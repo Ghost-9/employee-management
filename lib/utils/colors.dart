@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   // Primary palette
   static const Color primary = Color(0xFF4d9feb); // #91C9FF
-  static const Color primaryLight = Color(0xFFD3E9FF); // #D3E9FF
+  static const Color primaryLight = Color(0xFFFFFFFF); // #D3E9FF
   static const Color primaryDark = Color(0xFF192841); // #192841
   static const Color accent = Color(0xFF000000); // #000000
 
@@ -12,16 +12,22 @@ class AppColors {
   static const Color completed = Color(0xFF128235); // #128235
   static const Color progress = Color(0xFFF8A12F); // #F8A12F
   static const Color darkGrey = Color(0xFF525252); // #525252
+  static const Color lightGrey = Color(0xFF949C9E); // #949C9E
 
   // UI element colors
   static const Color scaffoldBackground = Colors.white;
   static const Color homeScaffold = Color(0xFFf2f2f2);
   static const Color sidebarBackground = Colors.white;
   static const Color sidebarText = Colors.white;
+  static const Color blueLight3 = Color(0xFFEDF8FF); // #4d9feb
   static const Color buttonPrimary = Color(0xFF4d9feb); // Same as primary
   static const Color buttonSecondary = Color(0xFF6C757D); // #6C757D
   static const Color buttonSuccess = Color(0xFF28A745); // #28A745
   static const Color buttonDanger = Color(0xFFDC3545); // #DC3545
+  static const Color textFormField = Color(0xFFE5E5E5); // #6C757D
+
+  static const Color color8 = Color(0xFF323238);
+  static const Color color1 = Color(0xFF1DA1F2);
 }
 
 class AppTextStyles {
@@ -69,6 +75,7 @@ class AppTheme {
         onSurface: AppColors.darkGrey,
         onError: Colors.white,
       ),
+
       scaffoldBackgroundColor: AppColors.scaffoldBackground,
       textTheme: const TextTheme(
         displayLarge: AppTextStyles.displayLarge,
@@ -159,25 +166,51 @@ class AppTheme {
       ),
       iconTheme: const IconThemeData(color: AppColors.darkGrey, size: 24),
       inputDecorationTheme: InputDecorationTheme(
+        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+        prefixIconConstraints: BoxConstraints(minWidth: 30, minHeight: 40),
+        isDense: true,
+        iconColor: AppColors.primary,
+        suffixIconColor: AppColors.primary,
+        prefixIconColor: AppColors.primary,
+        constraints: const BoxConstraints(minHeight: 48),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(6),
+          borderSide: const BorderSide(color: AppColors.buttonDanger),
+        ),
+        errorStyle: AppTextStyles.bodyMedium.copyWith(
+          color: AppColors.buttonDanger,
+        ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: AppColors.darkGrey),
+          borderRadius: BorderRadius.circular(6),
+          borderSide: const BorderSide(color: AppColors.textFormField),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: AppColors.primary, width: 2),
+          borderRadius: BorderRadius.circular(6),
+          borderSide: const BorderSide(
+            color: AppColors.textFormField,
+            width: 1,
+          ),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(6),
           borderSide: const BorderSide(color: AppColors.buttonDanger),
         ),
         filled: true,
         fillColor: Colors.white,
         labelStyle: AppTextStyles.bodyMedium.copyWith(
-          color: AppColors.darkGrey,
+          color: AppColors.lightGrey,
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 0,
         ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(6),
+          borderSide: const BorderSide(color: AppColors.textFormField),
+        ),
+        outlineBorder: BorderSide(color: AppColors.textFormField, width: 1),
         hintStyle: AppTextStyles.bodyMedium.copyWith(
-          color: AppColors.darkGrey.withValues(alpha: 0.6),
+          color: AppColors.lightGrey,
+          fontSize: 16,
         ),
       ),
       dialogTheme: DialogTheme(

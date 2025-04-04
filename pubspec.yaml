@@ -1,5 +1,5 @@
 name: employee_ledger
-description: "A new Flutter project."
+description: "A new Flutter project to manage employee records and ledger."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -21,6 +21,8 @@ dependencies:
   sembast: ^3.8.4+1
   path: ^1.9.1
   sembast_web: '2.4.1'
+  flutter_native_splash: ^2.4.5
+  flutter_launcher_icons: ^0.14.3
  
 
 dev_dependencies:
@@ -42,6 +44,21 @@ flutter:
   assets:
     - assets/images/
   
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/logo.png
+  ios: true
+  web: true
+  fullscreen: true
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/images/logo.png"
+
+
 
   # fonts:
   #   - family: Schyler

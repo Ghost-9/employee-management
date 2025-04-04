@@ -1,16 +1,40 @@
-# employee_ledger
+# 👨‍💼 Employee Ledger
 
-A new Flutter project.
+A Flutter-based web and mobile app to **manage employee records** efficiently.  
+This project supports deployment as a **Progressive Web App (PWA)** and **Android APK** with performance optimizations, obfuscation, and GitHub Pages hosting.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🌐 Live Demo
 
-A few resources to get you started if this is your first Flutter project:
+➡️ [https://ghost-9.github.io/employee_management/](https://ghost-9.github.io/employee_management/)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+## 📦 Features
+
+- ✨ Cross-platform: Web and Android
+- 🔐 Obfuscated & optimized APK builds
+- 📉 Tree-shaken icons and minimized resources
+- 💾 **Local database with [sembast](https://pub.dev/packages/sembast)** (No backend needed!)
+- ⚙️ CI/CD-ready Makefile with web & APK deployment
+- 📊 Manage employee data in a clean UI
+- 📲 PWA support for installation on mobile and desktop
+- ⚡ Splash screen and loading animation
+- 🧩 Skia-based rendering for enhanced performance
+
+---
+
+## 📚 Local Database (Cross-Platform)
+
+This app uses [`sembast`](https://pub.dev/packages/sembast), a NoSQL-style persistent database for Flutter:
+
+- Works on **Android, iOS, Web, macOS, Windows, Linux**
+- Pure Dart (no platform channels or native code)
+- Simple key-value store with Map-like structure
+- Perfect for storing employee records offline
+
+🗂️ Your data stays **on-device**, so this app works **offline by default**.
+
+---

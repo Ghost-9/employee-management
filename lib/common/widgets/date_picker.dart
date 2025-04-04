@@ -28,6 +28,9 @@ class EmployeeDatePickerState extends State<EmployeeDatePicker> {
   late DateTime _lastDate;
   late DateTime _currentSystemDate;
   bool _noDateSelected = false;
+  bool _showMonthPicker = false;
+  bool _showYearPicker = false;
+
   final DateFormat _dateFormat = DateFormat('d MMM yyyy');
 
   @override
@@ -163,8 +166,7 @@ class EmployeeDatePickerState extends State<EmployeeDatePicker> {
         return;
       } else if (type == 'today') {
         _selectedDate = _currentSystemDate;
-        _noDateSelected =
-            false; // Reset noDateSelected when a date is selected.
+        _noDateSelected = false;
       }
 
       if (widget.startDateConstraint != null &&
@@ -319,16 +321,33 @@ class EmployeeDatePickerState extends State<EmployeeDatePicker> {
                   color: AppColors.lightGrey,
                   iconSize: 30.0,
                 ),
-                Center(
-                  child: Text(
-                    DateFormat('MMMM yyyy').format(_today),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.color8,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () => setState(() => _showMonthPicker = true),
+                      child: Text(
+                        DateFormat('MMMM').format(_today),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.color8,
+                        ),
+                      ),
                     ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                    const SizedBox(width: 4),
+                    GestureDetector(
+                      onTap: () => setState(() => _showYearPicker = true),
+                      child: Text(
+                        DateFormat('yyyy').format(_today),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.color8,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+
                 IconButton(
                   icon: const Icon(
                     Icons.arrow_right_rounded,
@@ -353,39 +372,49 @@ class EmployeeDatePickerState extends State<EmployeeDatePicker> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Row(
-              children:
-                  weekDays
-                      .map(
-                        (day) => Expanded(
-                          child: Center(
-                            child: Text(
-                              day,
-                              style: TextStyle(
-                                fontSize: isSmallScreen ? 10.0 : 12.0,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-            ),
+            child:
+                _showMonthPicker || _showYearPicker
+                    ? const SizedBox()
+                    : Row(
+                      children:
+                          weekDays
+                              .map(
+                                (day) => Expanded(
+                                  child: Center(
+                                    child: Text(
+                                      day,
+                                      style: TextStyle(
+                                        fontSize: isSmallScreen ? 10.0 : 12.0,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                    ),
           ),
           const SizedBox(height: 4.0),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                for (var i = 0; i < calendarDays.length; i += 7)
-                  _buildWeek(
-                    calendarDays.sublist(
-                      i,
-                      i + 7 > calendarDays.length ? calendarDays.length : i + 7,
+            child:
+                _showMonthPicker
+                    ? _buildMonthPicker()
+                    : _showYearPicker
+                    ? _buildYearPicker()
+                    : Column(
+                      children: [
+                        for (var i = 0; i < calendarDays.length; i += 7)
+                          _buildWeek(
+                            calendarDays.sublist(
+                              i,
+                              i + 7 > calendarDays.length
+                                  ? calendarDays.length
+                                  : i + 7,
+                            ),
+                          ),
+                      ],
                     ),
-                  ),
-              ],
-            ),
           ),
           const SizedBox(height: 12.0),
           const Divider(),
@@ -468,6 +497,94 @@ class EmployeeDatePickerState extends State<EmployeeDatePicker> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildMonthPicker() {
+    return GridView.count(
+      shrinkWrap: true,
+      crossAxisCount: 3,
+      childAspectRatio: 2,
+      padding: const EdgeInsets.all(8.0),
+      children: List.generate(12, (index) {
+        final month = index + 1;
+        final isCurrent = _today.month == month;
+        return GestureDetector(
+          onTap: () {
+            if (widget.mode == DatePickerModeType.startDate &&
+                DateTime(_today.year, month).isAfter(_currentSystemDate)) {
+              return;
+            }
+            setState(() {
+              _today = DateTime(_today.year, month, 1);
+              _updateMonthRange();
+              _showMonthPicker = false;
+            });
+          },
+          child: Container(
+            margin: const EdgeInsets.all(4.0),
+            decoration: BoxDecoration(
+              color: isCurrent ? Colors.blue : Colors.transparent,
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Center(
+              child: Text(
+                DateFormat('MMM').format(DateTime(2023, month)),
+                style: TextStyle(
+                  color: isCurrent ? Colors.white : Colors.black,
+                  fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+            ),
+          ),
+        );
+      }),
+    );
+  }
+
+  Widget _buildYearPicker() {
+    final currentYear = _currentSystemDate.year;
+    final years = List.generate(15, (index) => currentYear - 14 + index);
+
+    return GridView.count(
+      shrinkWrap: true,
+      crossAxisCount: 3,
+      childAspectRatio: 2,
+      padding: const EdgeInsets.all(8.0),
+      children:
+          years.map((year) {
+            final isCurrent = _today.year == year;
+            return GestureDetector(
+              onTap: () {
+                if (widget.mode == DatePickerModeType.startDate &&
+                    year > _currentSystemDate.year) {
+                  return;
+                }
+                setState(() {
+                  _today = DateTime(year, _today.month, 1);
+                  _updateMonthRange();
+                  _showYearPicker = false;
+                });
+              },
+              child: Container(
+                margin: const EdgeInsets.all(4.0),
+                decoration: BoxDecoration(
+                  color: isCurrent ? Colors.blue : Colors.transparent,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Center(
+                  child: Text(
+                    year.toString(),
+                    style: TextStyle(
+                      color: isCurrent ? Colors.white : Colors.black,
+                      fontWeight:
+                          isCurrent ? FontWeight.bold : FontWeight.normal,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
     );
   }
 

@@ -209,7 +209,7 @@ class AddEmployeeScreenState extends State<AddEmployeeScreen> {
                                       initialDate:
                                           widget.isEdit
                                               ? _startDate
-                                              : DateTime.now(),
+                                              : _startDate ?? DateTime.now(),
                                     ),
                                   ),
                             );
@@ -271,7 +271,7 @@ class AddEmployeeScreenState extends State<AddEmployeeScreen> {
                                       initialDate:
                                           widget.isEdit
                                               ? _endDate
-                                              : DateTime.now(),
+                                              : _endDate ?? DateTime.now(),
                                       startDateConstraint: _startDate,
                                     ),
                                   ),

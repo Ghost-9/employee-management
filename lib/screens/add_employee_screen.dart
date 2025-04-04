@@ -214,9 +214,19 @@ class AddEmployeeScreenState extends State<AddEmployeeScreen> {
                                   ),
                             );
                             if (selectedDate != null) {
-                              setState(() {
-                                _startDate = selectedDate;
-                              });
+                              if (_endDate != null &&
+                                  selectedDate.isAfter(_endDate!)) {
+                                EmployeeUtils.showSnackbar(
+                                  // ignore: use_build_context_synchronously
+                                  context: context,
+                                  message:
+                                      "Start date cannot be after end date",
+                                );
+                              } else {
+                                setState(() {
+                                  _startDate = selectedDate;
+                                });
+                              }
                             }
                           },
                           child: AbsorbPointer(

@@ -27,4 +27,21 @@ class EmployeeUtils {
       ),
     );
   }
+
+  static void showSnackbar({
+    required String message,
+    required BuildContext context,
+  }) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        animation: const AlwaysStoppedAnimation(1),
+        backgroundColor: AppColors.color8,
+        duration: const Duration(seconds: 2),
+        content: Text(message),
+        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        behavior: SnackBarBehavior.fixed,
+        shape: Border(),
+      ),
+    );
+  }
 }

@@ -18,7 +18,7 @@ endif
 	flutter create . --platform web
 
 	@echo "🌍 Building for web..."
-	flutter build web --base-href $(BASE_HREF) --release
+	flutter build web --base-href $(BASE_HREF) --release --tree-shake-icons --pwa-strategy offline-first
 
 	@echo "🚀 Deploying to GitHub repository"
 	cd build/web && \

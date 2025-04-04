@@ -18,21 +18,58 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="A web app to manage employee records.">
+  
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="employee_ledger">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="apple-touch-icon" href="favicon.png" >
+
+  <meta name="description" content="A web app to manage employee records.">
+  <meta name="keywords" content="employee, ledger, management, records">
+  <meta name="author" content="Mayank Batra">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="stylesheet" href="style.css">
 
   <title>employee_ledger</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+  <div id="loading">
+    <!-- <dotlottie-player src="https://lottie.host/d2bf7618-d411-43f1-95cb-eb23df8bad3c/1DuW8SOtTQ.lottie" background="transparent" speed="1" style="width: 300px; height: 300px" loop autoplay></dotlottie-player> -->
+    <div class="spinner"></div>
+  </div>
+  <script>
+    window.onload = function () {
+      setTimeout(function() {
+        document.getElementById("loading").style.display = "none";
+    }, 800); 
+    };
+  </script>
+   <script src="flutter_bootstrap.js" defer async></script>
+   <script>
+    document.body.style.opacity = "1";
+  </script>
+  <script>
+    window.addEventListener("load", function (ev) {
+      _flutter.loader.load({
+        serviceWorker: {
+          serviceWorkerVersion: "LATEST",
+        },
+      }).then(function (engineInitializer) {
+        return engineInitializer.initializeEngine();
+      }).then(function (appRunner) {
+        return appRunner.runApp();
+      });
+    });
+  </script>
+ 
 </body>
 </html>

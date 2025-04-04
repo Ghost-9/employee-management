@@ -19,9 +19,10 @@ Future<void> main() async {
   await runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
-      final objectBox = await ObjectBoxHelper.create();
+      final db = SembastHelper();
+      await db.init();
 
-      runApp(MyApp(objectBox: objectBox));
+      runApp(MyApp(dbHelper: db));
     },
     (error, stackTrace) {
       _handleUncaughtError(error, stackTrace);
@@ -39,12 +40,12 @@ void _handleUncaughtError(Object error, StackTrace stackTrace) {
 }
 
 class MyApp extends StatelessWidget {
-  final ObjectBoxHelper objectBox;
-  const MyApp({super.key, required this.objectBox});
+  final SembastHelper dbHelper;
+  const MyApp({super.key, required this.dbHelper});
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => EmployeeBloc(objectBox)..add(LoadEmployees()),
+      create: (_) => EmployeeBloc(dbHelper)..add(LoadEmployees()),
       child: MaterialApp(
         scaffoldMessengerKey: snackbarKey,
         debugShowCheckedModeBanner: false,
@@ -62,7 +63,14 @@ class EmployeeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Employee List')),
+      appBar: AppBar(
+        centerTitle: false,
+        automaticallyImplyLeading: true,
+        title: Text(
+          'Employee List',
+          style: TextStyle(color: AppColors.homeScaffold),
+        ),
+      ),
       backgroundColor: AppColors.homeScaffold,
       body: BlocBuilder<EmployeeBloc, EmployeeState>(
         builder: (context, state) {

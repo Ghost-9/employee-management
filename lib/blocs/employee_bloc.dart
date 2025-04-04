@@ -6,46 +6,40 @@ import 'employee_event.dart';
 import 'employee_state.dart';
 
 class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
-  final ObjectBoxHelper dbHelper;
+  final SembastHelper dbHelper;
   Employee? _lastDeletedEmployee;
 
   EmployeeBloc(this.dbHelper) : super(EmployeeLoading()) {
     on<LoadEmployees>((event, emit) async {
-      try {
-        final employees = dbHelper.getEmployees();
-        if (employees.isEmpty) {
-          emit(EmployeeEmpty());
-        } else {
-          emit(EmployeeLoaded(employees));
-        }
-      } catch (e) {
-        emit(EmployeeError("Failed to load employees"));
+      final employees = await dbHelper.getEmployees();
+      if (employees.isEmpty) {
+        emit(EmployeeEmpty());
+        return;
       }
+      emit(EmployeeLoaded(employees));
     });
 
     on<AddEmployee>((event, emit) async {
-      dbHelper.insertEmployee(event.employee);
+      await dbHelper.insertEmployee(event.employee);
       add(LoadEmployees());
     });
 
     on<UpdateEmployee>((event, emit) async {
-      dbHelper.updateEmployee(event.employee);
+      await dbHelper.updateEmployee(event.employee);
       add(LoadEmployees());
     });
 
     on<DeleteEmployee>((event, emit) async {
-      _lastDeletedEmployee = dbHelper.getEmployeeByID(event.id);
-      if (_lastDeletedEmployee != null) {
-        dbHelper.deleteEmployee(event.id);
-        add(LoadEmployees());
-      }
+      _lastDeletedEmployee = (await dbHelper.getEmployees()).firstWhere(
+        (e) => e.id == event.id,
+      );
+      await dbHelper.deleteEmployee(event.id);
+      add(LoadEmployees());
     });
-    // });
   }
-
-  void undoDelete() {
+  void undoDelete() async {
     if (_lastDeletedEmployee != null) {
-      dbHelper.insertEmployee(_lastDeletedEmployee!);
+      await dbHelper.insertEmployee(_lastDeletedEmployee!);
       _lastDeletedEmployee = null;
       add(LoadEmployees());
     }
